@@ -7,6 +7,8 @@ var userClickedPattern = [];
 
 level = 0
 
+i = 0
+
 $(".btn").click(function() {
 
   var userChosenColour = $(this).attr("id");
@@ -17,7 +19,7 @@ $(".btn").click(function() {
 
   animatePress(userChosenColour);
 
-  checkAnswer(level,userChosenColour);
+  checkAnswer(level);
 });
 
 $(document).keypress(function()
@@ -50,36 +52,44 @@ function playSound(name) {
   audio.play();
 }
 
-function checkAnswer(level,userChosenColour)
+function checkAnswer(level)
 {
-  if (userChosenColour == gamePattern[gamePattern.length - 1]) {
-    console.log('success');
 
-    // The User Entered The Wrong Answer.
-  } else {
 
-    $("body").addClass("game-over");
+    while (i < gamePattern.length)
+    {
+      if(userClickedPattern[i] =! gamePattern[i])
+        {
+           i = 0
+          $("body").addClass("game-over");
 
-    setTimeout(function () {
+          setTimeout(function () {
 
-      $("body").removeClass("game-over");
+            $("body").removeClass("game-over");
 
-    },200);
+          },200);
 
-    $('h1').text('Game Over, Press A Key To Restart');
+          $('h1').text('Game Over, Press A Key To Restart');
 
-    startOver()
+          startOver()
+
+        userClickedPattern = []
+    }
+    i += 1;
+    console.log(i);
   }
-  setTimeout(function () {
-    nextSequence();
-  }, 1000);
-  userClickedPattern = []
+    i = 0
+    return
+
+
+
 }
 
 
 function startOver() {
   level = 0;
   gamePattern = [];
+  userClickedPattern = []
 }
 
 function animatePress(currentColor) {
